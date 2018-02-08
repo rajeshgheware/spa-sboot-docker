@@ -28,11 +28,21 @@
 	<appender name="Async-Appender" class="ch.qos.logback.classic.AsyncAppender">
 		<appender-ref ref="RollingFile-Appender" />
 	</appender>
-	<logger
-		name="in.rajeshg"
-		level="debug" additivity="false">
+	<appender name="STASH"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/logstash/server-rolling.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/logstash/server-rolling.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+			<maxHistory>7</maxHistory>
+		</rollingPolicy>
+		<encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+	</appender>
+
+
+	<logger name="in.rajeshg" level="debug" additivity="false">
 		<appender-ref ref="Console-Appender" />
-		<appender-ref ref="RollingFile-Appender" />
+		<appender-ref ref="STASH" />
 	</logger>
 	<logger name="in.rajeshg" level="info" />
 	<logger name="javax.net" level="info" />
@@ -41,5 +51,6 @@
 	<root level="info">
 		<appender-ref ref="Console-Appender" />
 		<appender-ref ref="Async-Appender" />
+		<appender-ref ref="STASH" />
 	</root>
 </configuration>
